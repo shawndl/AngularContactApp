@@ -1,0 +1,42 @@
+const router = require('express').Router();
+const auth = require('./auth');
+const validateAuth = require('./authValidation');
+const winston = require('../../utils/logging');
+const userValidation = require('../users/userValidation');
+const emailTaken = require('../../middleware/emailTakenMiddleware');
+const User = require('../users/userModel');
+/**
+ * route to login the user,
+ * uses the verify user middleware in the verify user function from auth.js
+ */
+router.post('/login', [validateAuth(), auth.verifyUser()], (request, response, next) => {
+  winston.info('In the post route');
+  winston.info(request.auth);
+
+  const token = auth.signToken(request.auth._id);
+  response.status(200).json({
+    isAdmin: request.auth.isAdmin,
+    token: token
+  });
+});
+
+/**
+ * route to register a user
+ */
+router.post('/register', [userValidation(), emailTaken()], (request, response, next) => {
+  winston.info('Registering user');
+  let newUser = request.body;
+  newUser.isAdmin = false;
+  delete newUser.passwordConfirm;
+  User.create(newUser)
+    .then(
+      (user) => {
+        response.status(201).json('Congratulation, you successfully registered');
+      },
+      (error) => {
+        winston.info('There was an error creating a new user, mongo rejected the request');
+        next(error);
+      });
+});
+
+module.exports = router;

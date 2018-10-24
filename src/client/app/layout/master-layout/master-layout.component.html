@@ -1,0 +1,81 @@
+<mat-sidenav-container>
+  <mat-sidenav #sidenav mode="side">
+    <div class="side-navbar-header">
+      <div class="side-navbar-title">
+        Contact App
+        <button mat-icon-button (click)="sidenav.close()">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+      </div>
+      <hr>
+    </div>
+    <mat-nav-list>
+      <a mat-list-item [routerLink]="['contacts']">
+        <mat-icon mat-list-icon>contacts</mat-icon><h4>View Contacts</h4>
+      </a>
+      <a *ngIf="auth.isLoggedIn() && auth.isAdmin()"
+         mat-list-item
+         [routerLink]="['/admin/users']">
+        <mat-icon mat-list-icon>
+          perm_identity
+        </mat-icon><h4>View Users</h4>
+      </a>
+      <a *ngIf="!auth.isLoggedIn()"
+         mat-list-item
+         [routerLink]="['login']">
+        <mat-icon mat-list-icon>
+          <i class="fa fa-sign-in" aria-hidden="true"></i>
+        </mat-icon><h4>Login</h4>
+      </a>
+      <a *ngIf="!auth.isLoggedIn()"
+         mat-list-item
+         [routerLink]="['register']">
+        <mat-icon mat-list-icon>
+          <i class="fa fa-registered" aria-hidden="true"></i>
+        </mat-icon><h4>Register</h4>
+      </a>
+      <a *ngIf="auth.isLoggedIn()"
+         mat-list-item
+         (click)="logOut()">
+        <mat-icon mat-list-icon>
+          <i class="fa fa-sign-out" aria-hidden="true"></i>
+        </mat-icon><h4>Logout</h4>
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-toolbar>
+    <mat-toolbar-row>
+      <span>Manage Contacts App</span>
+      <span class="fill-space"></span>
+      <button *ngIf="!auth.isLoggedIn()"
+              mat-icon-button
+              matTooltip="Log In"
+              class="icon-item"
+              [routerLink]="['login']">
+        <i class="fa fa-sign-in fa-2x" aria-hidden="true"></i>
+      </button>
+      <button *ngIf="!auth.isLoggedIn()"
+              mat-icon-button
+              matTooltip="Sign Up"
+              class="icon-item"
+              [routerLink]="['register']">
+        <i class="fa fa-registered fa-2x" aria-hidden="true"></i>
+      </button>
+      <button *ngIf="auth.isLoggedIn()"
+              mat-icon-button
+              matTooltip="Logout"
+              class="icon-item"
+              (click)="logOut()">
+        <i class="fa fa-sign-out fa-2x" aria-hidden="true"></i>
+      </button>
+    </mat-toolbar-row>
+    <mat-toolbar-row>
+      <button class="side-nav-toggle" mat-icon-button (click)="sidenav.toggle()">
+        <mat-icon>{{ getMenuIcon(sidenav.opened) }}</mat-icon>
+      </button>
+    </mat-toolbar-row>
+  </mat-toolbar>
+  <div class="container">
+    <router-outlet></router-outlet>
+  </div>
+</mat-sidenav-container>

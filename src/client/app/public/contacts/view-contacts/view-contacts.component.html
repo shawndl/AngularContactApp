@@ -1,0 +1,36 @@
+<div *ngIf="pagination">
+  <mat-paginator [length]="pagination.total"
+                 [pageSize]="pagination.offset"
+                 [pageSizeOptions]="[10, 20, 25]" (page)="refreshContacts($event)">
+  </mat-paginator>
+</div>
+<div *ngIf="contacts">
+  <mat-card *ngFor="let contact of contacts">
+    <mat-grid-list cols="3" rowHeight="50">
+      <mat-grid-tile>
+        <mat-icon>person</mat-icon> {{ contact.firstName + ' ' + contact.lastName }}
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-icon>email</mat-icon> {{ contact.emails | firstObject:'email' }}
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-icon>phone</mat-icon> {{ contact.phones | firstObject:'phone' }}
+      </mat-grid-tile>
+    </mat-grid-list>
+    <mat-card-actions>
+      <a [routerLink]="['/contacts/' + contact._id + '/edit']" mat-raised-button color="accent"><mat-icon>list</mat-icon> Edit</a>
+      <a [routerLink]="['/contacts/' + contact._id]" mat-raised-button color="primary"><mat-icon>contacts</mat-icon> View Contact</a>
+      <button mat-raised-button color="warn" (click)="onDelete(contact)">
+        <mat-icon>delete</mat-icon>Delete
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>
+
+
+<a id="createButton"
+   mat-fab
+   matTooltip="Create"
+   [routerLink]="['/contacts/create']">
+  <mat-icon>create</mat-icon>
+</a>

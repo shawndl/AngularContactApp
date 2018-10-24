@@ -1,0 +1,23 @@
+<app-back-button [endRoute]="'/contacts'"></app-back-button>
+
+<mat-card *ngIf="contact">
+  <mat-card-title>{{ contact.firstName | capitalise }} {{contact.lastName | capitalise}}</mat-card-title>
+  <mat-card-content>
+    <mat-card-subtitle>Email Addresses</mat-card-subtitle>
+    <div *ngFor="let item of contact.emails">
+      <hr>
+      <mat-icon>email</mat-icon><span>{{ item.emailType | capitalise}} Email: {{ item.email }}</span>
+    </div>
+    <span class="lg-padding"></span>
+    <mat-card-subtitle>Phone Numbers</mat-card-subtitle>
+    <div *ngFor="let item of contact.phones">
+      <hr>
+      <mat-icon>phone</mat-icon><span>{{ item.phoneType | capitalise}} Phone Number: {{ item.phone }}</span>
+    </div>
+  </mat-card-content>
+  <mat-card-actions>
+    <a [routerLink]="['/contacts/' + contact._id + '/edit']" mat-raised-button color="accent">Edit</a>
+    <button mat-raised-button color="warn" (click)="onDelete()">Delete</button>
+  </mat-card-actions>
+</mat-card>
+

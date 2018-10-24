@@ -1,0 +1,51 @@
+<mat-card>
+  <mat-card-title>Sign Up</mat-card-title>
+  <mat-card-subtitle>Please fill out the form below</mat-card-subtitle>
+  <mat-card-content>
+    <form class="user-form"
+          [formGroup]="signUpForm"
+          (ngSubmit)="onSubmitForm()">
+      <mat-form-field class="user-input">
+        <input matInput placeholder="Enter your first name" formControlName="firstName">
+        <mat-hint align="end">Sam</mat-hint>
+        <mat-error *ngIf="firstNameField.invalid">You must enter your first name</mat-error>
+      </mat-form-field>
+      <mat-form-field class="user-input">
+        <input matInput placeholder="Enter your last name" formControlName="lastName">
+        <mat-hint align="end">Smith</mat-hint>
+        <mat-error *ngIf="lastNameField.invalid">You must enter your last name</mat-error>
+      </mat-form-field>
+      <mat-form-field class="user-input">
+        <input matInput placeholder="Enter your phone number" formControlName="phone">
+        <mat-hint align="end">xx-xxxx-xxxx</mat-hint>
+        <mat-error *ngIf="phoneField.invalid">{{ validatorErrors.phoneErrors(phoneField) }}</mat-error>
+      </mat-form-field>
+      <mat-form-field class="user-input">
+        <input matInput type="email" placeholder="Enter the email" formControlName="email">
+        <mat-hint align="end">yourname@company.com</mat-hint>
+        <mat-error *ngIf="emailField.invalid">{{ validatorErrors.emailErrors(emailField) }}</mat-error>
+        <p color="warn" *ngIf="emailError">{{ emailError}}</p>
+      </mat-form-field>
+      <mat-form-field class="user-input">
+        <input matInput
+               placeholder="Enter your password"
+               type="password"
+               formControlName="password">
+          <mat-error *ngIf="passwordField.errors">{{ validatorErrors.passwordErrors(passwordField) }}</mat-error>
+      </mat-form-field>
+      <mat-form-field class="user-input">
+        <input matInput
+               placeholder="Enter confirm your password"
+               type="password"
+               formControlName="passwordConfirm"
+               [errorStateMatcher]="passwordMatches">
+        <mat-error *ngIf="signUpForm.errors && signUpForm.errors.matchPassword && !passwordConfirmField.untouched">
+          Your password and confirm password doesn't match
+        </mat-error>
+      </mat-form-field>
+    </form>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-button color="accent" [disabled]="signUpForm.invalid" (click)="onSubmitForm()">Submit</button>
+  </mat-card-actions>
+</mat-card>

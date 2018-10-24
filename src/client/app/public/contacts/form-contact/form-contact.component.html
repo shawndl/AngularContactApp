@@ -1,0 +1,102 @@
+<app-back-button [endRoute]="'/contacts'"></app-back-button>
+<form [formGroup]="contactForm"
+      (ngSubmit)="onSubmitForm()">
+  <mat-card>
+      <mat-card-title>Contact Details</mat-card-title>
+      <mat-card-content>
+        <div class="flex-line">
+          <mat-input-container class="width-40">
+            <input matInput placeholder="First Name" formControlName="firstName">
+            <mat-error *ngIf="contactForm.controls.firstName.invalid">You must enter your contact's first name</mat-error>
+          </mat-input-container>
+          <mat-input-container class="width-40">
+            <input matInput placeholder="Last Name" formControlName="lastName">
+            <mat-error *ngIf="contactForm.controls.lastName.invalid">You must enter contact's last name</mat-error>
+          </mat-input-container>
+        </div>
+      </mat-card-content>
+  </mat-card>
+  <mat-card>
+    <mat-card-title>
+      Contact's Email Addresses
+    </mat-card-title>
+    <mat-card-content>
+      <div *ngFor="let email of emailsField.controls; let i = index"
+           formArrayName="emails">
+        <div [formGroupName]="i" class="flex-line">
+          <div class="width-20">
+            <button mat-fab color="warn" (click)="removeEmail(i)">
+              <mat-icon>remove</mat-icon>
+            </button>
+          </div>
+          <mat-input-container class="width-40">
+            <input matInput placeholder="Email" formControlName="email">
+            <mat-icon>email</mat-icon>
+            <mat-error *ngIf="emailsField.controls[i].controls.email.invalid">
+              {{ validatorErrors.emailErrors(emailsField.controls[i].controls.email) }}
+            </mat-error>
+          </mat-input-container>
+          <mat-radio-group formControlName="emailType" class="width-40">
+            <mat-radio-button value="home">Home</mat-radio-button>
+            <mat-radio-button value="work">Work</mat-radio-button>
+            <mat-error *ngIf="emailsField.controls[i].controls.emailType.invalid && !emailsField.controls[i].controls.emailType.pristine">
+              What type of email is it?
+            </mat-error>
+          </mat-radio-group>
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card-actions align="end">
+      <span class="fill-space"></span>
+      <button mat-fab
+              type="button"
+              (click)="addEmail()">
+        <mat-icon>add</mat-icon>
+      </button>
+    </mat-card-actions>
+  </mat-card>
+  <mat-card>
+    <mat-card-title>
+      Contact's Phone Number
+    </mat-card-title>
+    <mat-card-content>
+      <div *ngFor="let phone of phonesField.controls; let i = index"
+           formArrayName="phones">
+        <div [formGroupName]="i" class="flex-line">
+          <div class="width-20">
+            <button mat-fab color="warn" (click)="removePhone(i)">
+              <mat-icon>remove</mat-icon>
+            </button>
+          </div>
+          <mat-input-container class="width-40">
+            <input matInput placeholder="phone number" formControlName="phone">
+            <mat-icon>phone</mat-icon>
+            <mat-error *ngIf="phonesField.controls[i].controls.phone.invalid">
+              {{ validatorErrors.phoneErrors(phonesField.controls[i].controls.phone) }}
+            </mat-error>
+          </mat-input-container>
+          <mat-radio-group formControlName="phoneType" class="width-40">
+            <mat-radio-button value="home">Home</mat-radio-button>
+            <mat-radio-button value="work">Work</mat-radio-button>
+            <mat-radio-button value="mobile">Mobile</mat-radio-button>
+            <mat-error *ngIf="phonesField.controls[i].controls.phoneType.invalid && !phonesField.controls[i].controls.phoneType.pristine">
+              What type of phone number is it?
+            </mat-error>
+          </mat-radio-group>
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card-actions align="end">
+      <span class="fill-space"></span>
+      <button mat-fab
+              type="button"
+              (click)="addPhone()">
+        <mat-icon>add</mat-icon>
+      </button>
+    </mat-card-actions>
+  </mat-card>
+  <mat-card>
+    <a mat-raised-button color="warn" [routerLink]="['/contacts']">Cancel</a>
+    <button mat-raised-button type="submit" color="accent">Add</button>
+  </mat-card>
+</form>

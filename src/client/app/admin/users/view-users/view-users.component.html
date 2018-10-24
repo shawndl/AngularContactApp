@@ -1,0 +1,42 @@
+<div *ngIf="pagination">
+  <mat-paginator [length]="pagination.total"
+                 [pageSize]="pagination.offset"
+                 [pageSizeOptions]="[10, 20, 25]" (page)="refreshUsers($event)">
+  </mat-paginator>
+</div>
+<div *ngIf="users">
+  <mat-card *ngFor="let user of users">
+    <mat-grid-list cols="3" rowHeight="50">
+      <mat-grid-tile>
+        <mat-icon>person</mat-icon> {{ user.firstName + ' ' + user.lastName }}
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-icon>email</mat-icon> {{ user.email }}
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-icon>phone</mat-icon> {{ user.phone }}
+      </mat-grid-tile>
+    </mat-grid-list>
+    <mat-card-actions>
+      <a [routerLink]="['/admin/users/' + user._id + '/edit']"
+         mat-raised-button
+         color="accent">
+        <mat-icon>list</mat-icon>
+        Edit
+      </a>
+      <button mat-raised-button
+              color="warn"
+              (click)="onDelete(user)">
+        <mat-icon>delete</mat-icon>Delete
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>
+
+
+<a id="createButton"
+   mat-fab
+   matTooltip="Create"
+   [routerLink]="['/admin/users/create']">
+  <mat-icon>create</mat-icon>
+</a>

@@ -1,0 +1,123 @@
+const User = require('./userModel');
+const config = require('../../config/config');
+const winston = require('../../utils/logging');
+const _ = require('lodash');
+
+/**
+ * if there is a parameter id in the query string then it will find the user
+ * associated with that id
+ * @param request
+ * @param response
+ * @param next
+ * @param id
+ */
+exports.params = (request, response, next, id) => {
+  winston.info('Setting contact based on id parameter');
+  User.findById(id)
+    .then((user) => {
+      if(!user) {
+        next(new Error('User could not be found'))
+      } else {
+        request.currentUser = user;
+        next();
+      }
+    }, (error) => {
+      next(error);
+    });
+};
+
+/**
+ * gets all users and paginates the results
+ * @param request
+ * @param response
+ * @param next
+ */
+exports.get = (request, response, next) => {
+  const offset = (request.query.offset) ? parseInt(request.query.offset) : config.paginate.offset;
+  const limit = (request.query.limit) ? parseInt(request.query.limit) : config.paginate.limit;
+
+  User.paginate({}, {
+    offset: offset,
+    limit: limit
+  })
+    .then((users) => {
+      response.status(200).json(users);
+    }, (error) => {
+      next(error);
+    });
+};
+
+/**
+ * finds a single record and returns it
+ * @param request
+ * @param response
+ * @param next
+ */
+exports.getOne = (request, response, next) => {
+  let user = request.currentUser;
+  winston.info(request.currentUser);
+  response.status(200).json(user);
+};
+
+/**
+ * finds a user and updates their information
+ * @param request
+ * @param response
+ * @param next
+ */
+exports.put = (request, response, next) => {
+  let user = request.currentUser;
+
+  let update = request.body;
+
+  _.merge(user, update);
+  name = user.firstName + ' ' + user.lastName;
+  user.save((error, saved) => {
+    if (error) {
+      next(error);
+    } else {
+      response.status(200).json('The user ' + name + ' details have been updated!');
+    }
+  })
+};
+
+/**
+ * creates a new user
+ * @param request
+ * @param response
+ * @param next
+ */
+exports.post = (request, response, next) => {
+  const newUser = request.body;
+  const message = 'A user name ' + newUser.firstName + ' ' + newUser.lastName + ' was added!';
+  delete newUser.passwordConfirm;
+  winston.info(message);
+  User.create(newUser)
+    .then(
+      (user) => {
+        response.status(201).json(message);
+      },
+      (error) => {
+        winston.info('There was an error creating a new user, mongo rejected the request');
+        next(error);
+      });
+};
+
+/**
+ * finds and deletes a user
+ * @param request
+ * @param response
+ * @param next
+ */
+exports.delete = (request, response, next) => {
+  winston.info('starting delete process');
+  name = request.currentUser.firstName + ' ' + request.currentUser.lastName;
+  winston.info(name);
+  request.currentUser.remove((error, removed) => {
+    if (error) {
+      next(error);
+    } else {
+      response.status(200).json('You deleted the user ' + name);
+    }
+  });
+};

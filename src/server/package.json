@@ -1,0 +1,45 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "A contact app using the mean stack",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [
+    "MEAN",
+    "Stack"
+  ],
+  "author": "Shawn Legge",
+  "license": "ISC",
+  "private": true,
+  "dependencies": {
+    "angular2-jwt": "^0.2.3",
+    "bcrypt": "^1.0.3",
+    "body-parser": "^1.18.2",
+    "core-js": "^2.5.3",
+    "cors": "^2.8.4",
+    "csurf": "^1.9.0",
+    "dotenv": "^4.0.0",
+    "express": "^4.16.2",
+    "express-jwt": "^5.3.0",
+    "express-validator": "^4.3.0",
+    "hammerjs": "^2.0.8",
+    "jsonwebtoken": "^8.1.0",
+    "lodash": "^4.17.4",
+    "mongodb": "^3.0.0-rc0",
+    "mongoose": "^4.13.7",
+    "mongoose-paginate": "^5.0.3",
+    "morgan": "^1.9.0",
+    "npm-run-all": "^4.1.2",
+    "rxjs": "^5.5.2",
+    "winston": "^2.4.0",
+    "zone.js": "^0.8.14"
+  },
+  "devDependencies": {
+    "protractor": "~5.1.2",
+    "ts-node": "~3.2.0",
+    "tslint": "~5.7.0",
+    "typescript": "~2.4.2"
+  }
+}

@@ -1,0 +1,28 @@
+
+<mat-card>
+  <mat-card-title>Log In</mat-card-title>
+  <mat-card-subtitle>Please fill out the form below</mat-card-subtitle>
+  <mat-card-content>
+    <form class="user-form"
+          [formGroup]="loginForm">
+      <mat-error *ngIf="responseError">{{ responseError }}</mat-error>
+      <mat-form-field class="user-input">
+        <input matInput placeholder="Enter the email" formControlName="email">
+        <mat-hint align="end">yourname@company.com</mat-hint>
+        <mat-error *ngIf="emailField.invalid">{{getEmailErrors()}}</mat-error>
+      </mat-form-field>
+      <mat-form-field class="user-input">
+        <input matInput placeholder="Enter your password" type="password" formControlName="password">
+        <mat-error *ngIf="passwordField.invalid">{{getPasswordErrors()}}</mat-error>
+      </mat-form-field>
+    </form>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-button
+            color="accent"
+            type="submit"
+            (click)="onSubmitForm()">
+      Submit
+    </button>
+  </mat-card-actions>
+</mat-card>

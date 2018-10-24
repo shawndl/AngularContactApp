@@ -1,0 +1,57 @@
+@import "../../../styles";
+
+.tool-bar-item {
+  padding: 0 50px;
+}
+
+.mat-sidenav-container {
+  .mat-sidenav {
+    width: 250px;
+    background: snow;
+    .side-navbar-header {
+      height: 107px;
+      background: lightgray;
+      padding: 10px;
+      border-bottom: 1px solid #000;
+      .side-navbar-title {
+        font-size: $font-xl;
+        .mat-icon {
+          vertical-align: baseline;
+        }
+        button {
+          float: right;
+        }
+      }
+      img {
+        height: 50px;
+        width: auto;
+        border-radius: 50px;
+      }
+    }
+  }
+
+  .mat-toolbar {
+    padding: 0;
+    .mat-toolbar-row:first-of-type {
+      color: snow;
+      background-color: mat-color($primary, 700);
+      display: flex;
+
+      button {
+        color: snow;
+        width: 40px;
+        padding: inherit;
+        min-width: inherit;
+      }
+    }
+
+    .mat-toolbar-row {
+      background-color: mat-color($primary, 500);
+    }
+  }
+
+  .container {
+    padding: 10px;
+    margin: 10px;
+  }
+}
